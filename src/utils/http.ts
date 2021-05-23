@@ -1,18 +1,16 @@
 import axios, { AxiosError } from 'axios'
-import { apiUrlProd, apiUrlDev, apiUrlMobile } from 'configs/index.json'
+import { apiUrl } from 'configs/index.json'
 import createAuthRefreshInterceptor from 'axios-auth-refresh'
 
 //intercept requests
 axios.interceptors.request.use((config) => {
-  config.baseURL =
-    process.env.NODE_ENV === 'development' ? apiUrlDev : apiUrlProd
+  config.baseURL = apiUrl
 
-  const access_token = localStorage.getItem('access_token')
+  const access_token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlODIyMjI4YzE4ZmQ2Y2RmMTIzZWQyNTM0NTdkOWI2ZCIsInN1YiI6IjYwYThiYzI1YWY4NWRlMDAyOWQ1N2YwYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.pqfZLjA8HlJcIYKDOzUJz8ZDOy3iBLVLoBWTVskyF60"
 
   if (access_token) {
     config.headers.Authorization = `Bearer ${access_token}`
   }
-  config.withCredentials = true
 
   return config
 })
@@ -31,28 +29,6 @@ axios.interceptors.response.use(
   }
 )
 
-createAuthRefreshInterceptor(
-  axios,
-  (failedRequest) => {
-    return axios
-      .get('/auth/refresh-token')
-      .then(({ data }) => {
-        localStorage.setItem('access_token', data.access_token)
-        return Promise.resolve()
-      })
-      .catch((error) => {
-        if (error.response.status === 406) {
-          localStorage.removeItem('access_token')
-          window.location.href = '/signin'
-        }
-        console.log(error.response)
-      })
-  },
-  {
-    statusCodes: [403],
-    // pauseInstanceWhileRefreshing: true,
-  }
-)
 
 export default {
   get: axios.get,
