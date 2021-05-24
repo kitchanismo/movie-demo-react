@@ -49,11 +49,7 @@ const Home: React.SFC<HomeProps> = () => {
 
   return (
     <>
-      <Search
-        onSubmit={() =>
-          handleSearchMovies(movieState.query, movieState?.data?.page)
-        }
-      />
+      <Search onSubmit={() => handleSearchMovies(movieState.query, 1)} />
       {hadSearch && (
         <Typography style={{ marginTop: 5 }} variant='body1'>
           Search results: {movieState?.data?.total_results}
