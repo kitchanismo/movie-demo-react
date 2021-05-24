@@ -31,6 +31,7 @@ const Movies: React.SFC<MoviesProps> = ({ movies }) => {
     )
     movieDispatch({ type: 'ON_ADD_FAVORITES', payload: id })
   }
+
   return (
     <Box
       mt='10px'

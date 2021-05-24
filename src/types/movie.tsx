@@ -1,3 +1,6 @@
+import { Genre } from './genre'
+import { Language } from './language'
+
 export type Movie = {
   id: number
   backdrop_path: string
@@ -13,4 +16,11 @@ export type Movie = {
   vote_average: number
   vote_count: number
   isFavorite?: boolean
+  budget?: number
+  genres?: Genre[]
+  homepage?: string
+  runtime?: number
+  status?: string
+  tagline?: string
+  spoken_languages?: Language[]
 }

@@ -49,9 +49,6 @@ const MovieCard: React.SFC<MovieCardProps> = ({ movie }) => {
         <IconButton aria-label='add to favorites'>
           <FavoriteIcon />
         </IconButton>
-        <Button size='small' color='primary'>
-          Learn More
-        </Button>
       </CardActions>
     </Card>
   )

@@ -12,6 +12,8 @@ interface MovieState {
   data: MovieDTO
   query: string
   favorites: number[]
+  isLoading: boolean
+  movie: Movie | null
 }
 
 type MovieAction =
@@ -19,11 +21,17 @@ type MovieAction =
       type: 'ON_SET_MOVIES'
       payload: MovieDTO
     }
+  | { type: 'ON_SET_LOADING'; payload: boolean }
   | { type: 'ON_SET_PAGE'; payload: number }
   | { type: 'ON_SET_QUERY'; payload: string }
   | { type: 'ON_SET_FAVORITES'; payload: number[] }
   | { type: 'ON_ADD_FAVORITES'; payload: number }
+  | { type: 'ON_TOGGLE_FAVORITES' }
   | { type: 'ON_REMOVE_FAVORITES'; payload: number }
+  | {
+      type: 'ON_SET_MOVIE'
+      payload: Movie
+    }
 
 const reducer = (state: MovieState, action: MovieAction) => {
   switch (action.type) {
@@ -36,15 +44,20 @@ const reducer = (state: MovieState, action: MovieAction) => {
         isFavorite: state?.favorites.includes(movie.id),
       }))
       break
+    case 'ON_SET_MOVIE':
+      state.movie = action.payload
+      break
     case 'ON_SET_PAGE':
       state.data.page = action.payload
+      break
+    case 'ON_SET_LOADING':
+      state.isLoading = action.payload
       break
     case 'ON_SET_QUERY':
       state.query = action.payload
       break
     case 'ON_SET_FAVORITES':
       state.favorites = action.payload
-
       break
     case 'ON_ADD_FAVORITES':
       state.favorites.push(action.payload)
@@ -69,7 +82,9 @@ const reducer = (state: MovieState, action: MovieAction) => {
 
 const MovieProvider: React.FC = (props) => {
   const [state, dispatch] = useReducer(produce(reducer), {
+    movie: null,
     favorites: [],
+    isLoading: false,
     query: '',
     data: { page: 1, total_pages: 0, total_results: 0, results: [] },
   })

@@ -5,7 +5,12 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import Badge from '@material-ui/core/Badge'
+import LinearProgress from '@material-ui/core/LinearProgress'
+
+import { GlobalContext } from 'providers/GlobalProvider'
+import { getPopular } from 'services/movieService'
 import { MovieContext } from 'providers/MovieProvider'
+import { MovieDTO } from 'types/movieDTO'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,20 +22,35 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function ButtonAppBar() {
-  const [movieState] = useContext(MovieContext)!
+  const [globalState, globalDispatch] = useContext(GlobalContext)!
+  const [_, movieDispatch] = useContext(MovieContext)!
+
   const classes = useStyles()
+
+  const handleOnLoadPopularMovies = () => {
+    globalDispatch({ type: 'SET_IS_LOADING', payload: true })
+    getPopular(1).then((data: MovieDTO) => {
+      globalDispatch({ type: 'SET_IS_LOADING', payload: false })
+      movieDispatch({
+        type: 'ON_SET_MOVIES',
+        payload: data,
+      })
+    })
+  }
 
   return (
     <div className={classes.root}>
       <AppBar position='static'>
         <Toolbar>
-          <Typography variant='h6' className={classes.title}>
-            Movie Demo
+          <Typography
+            onClick={handleOnLoadPopularMovies}
+            variant='h6'
+            className={classes.title}
+          >
+            {globalState?.title}
           </Typography>
-          <Badge badgeContent={movieState?.favorites.length} color='secondary'>
-            <FavoriteIcon style={{ color: 'white' }} />
-          </Badge>
         </Toolbar>
+        {globalState?.isLoading && <LinearProgress color='secondary' />}
       </AppBar>
     </div>
   )

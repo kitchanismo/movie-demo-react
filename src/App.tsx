@@ -15,8 +15,8 @@ const App: React.FC = (props) => {
   return (
     <>
       <MovieProvider>
-        <Nav></Nav>
-        <Container maxWidth='xs' className={styles.container}>
+        <Nav />
+        <Container maxWidth='md' className={styles.container}>
           <CssBaseline />
           <Routes />
         </Container>
@@ -26,9 +26,8 @@ const App: React.FC = (props) => {
 }
 const useStyles = makeStyles((theme) => ({
   container: {
+    position: 'relative',
     padding: 20,
-
-    height: '100%',
   },
 }))
 
