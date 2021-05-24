@@ -1,5 +1,5 @@
 import http from 'utils/http'
-const API_KEY = 'e822228c18fd6cdf123ed253457d9b6d'
+const API_KEY = process.env.API_KEY
 
 export const search = (query: string, page: number) => {
   return http
