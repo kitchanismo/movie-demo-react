@@ -31,6 +31,7 @@ const Home: React.SFC<HomeProps> = () => {
         type: 'ON_SET_MOVIES',
         payload: data,
       })
+      setHadSearch(false)
     })
   }
 
