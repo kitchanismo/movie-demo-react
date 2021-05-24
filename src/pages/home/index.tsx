@@ -37,6 +37,12 @@ const Home: React.SFC<HomeProps> = () => {
 
   const handleSearchMovies = (query: string, page: number) => {
     globalDispatch({ type: 'SET_IS_LOADING', payload: true })
+
+    if (!movieState.query) {
+      handleOnLoadPopularMovies(page)
+      return
+    }
+
     search(query, page).then((data: MovieDTO) => {
       globalDispatch({ type: 'SET_IS_LOADING', payload: false })
       movieDispatch({

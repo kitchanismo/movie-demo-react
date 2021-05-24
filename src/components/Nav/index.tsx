@@ -35,6 +35,10 @@ export default function ButtonAppBar() {
         type: 'ON_SET_MOVIES',
         payload: data,
       })
+      movieDispatch({
+        type: 'ON_SET_QUERY',
+        payload: '',
+      })
     })
   }
 
